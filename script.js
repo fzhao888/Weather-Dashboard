@@ -94,7 +94,8 @@ function renderCurrentWeather(results) {
     console.log(results.weather[0].icon);
     console.log(results.main.humidity);
     console.log(results.wind.speed);
-    console.log(results.dt);
+    console.log(new Date(results.dt * 1000).toLocaleDateString());
+    
 }
 
 //renders 5-day forecast that displays the date, an icon representation of weather conditions, the temperature, the wind speed, and the humidity
@@ -124,7 +125,7 @@ function renderFiveDay(results) {
         console.log(results.list[i].weather[0].icon);
         console.log(results.list[i].main.humidity);
         console.log(results.list[i].wind.speed);
-        console.log(results.list[i].dt);
+        console.log(new Date(results.list[i].dt * 1000).toLocaleDateString());
     }
 }
 
