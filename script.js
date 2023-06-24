@@ -7,6 +7,7 @@
 
 let searchBtn = document.getElementById('search');
 let previousResultsEl = document.querySelector('.previous-results');
+let searchResultsEl = document.querySelector('.search-results');
 let searchInputEl = document.getElementById('search-input');
 let cityname = "";
 
@@ -73,7 +74,7 @@ function getCurrentWeather() {
     cityname = document.location.search.split('=')[1];
 
     let apiKey = '764671b721b30354fb8205614f3a38ac';
-    let queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityname + "&appid=" + apiKey;
+    let queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityname + "&appid=" + apiKey + "&units=imperial";
 
     //fetch lat and lon coordinates 
     fetch(queryURL)
@@ -89,13 +90,38 @@ function getCurrentWeather() {
 }
 //renders city name, the date, an icon representation of weather conditions, the temperature, the humidity, and the the wind speed
 function renderCurrentWeather(results) {
+    let resultCard = document.createElement('div');
+    
+    let titleCard = document.createElement('div'); 
+    let titleEl = document.createElement('h2');
+    titleEl.textContent = results.name + " " + "(" + new Date(results.dt * 1000).toLocaleDateString() + ") ";
+    let iconEl = document.createElement('img');
+    iconEl.setAttribute('src','https://openweathermap.org/img/wn/' + results.weather[0].icon + '.png'); 
+
+    titleCard.style.display = 'flex'; 
+    titleCard.style.alignItems = 'center';
+    titleCard.append(titleEl,iconEl);
+
+    let bodyCard = document.createElement('div');
+    let tempEl = document.createElement('p');
+    tempEl.textContent = "Temp: " + results.main.temp +  " °F";
+    let windspeedEl = document.createElement('p');
+    windspeedEl.textContent = "Windspeed: " + results.wind.speed + " MPH";
+    let humidityEl = document.createElement('p');
+    humidityEl.textContent = "Humidity: " + results.main.humidity + " %";
+    bodyCard.append(tempEl,windspeedEl,humidityEl);
+
+
+
     console.log(results);
     console.log(results.name);
     console.log(results.weather[0].icon);
     console.log(results.main.humidity);
     console.log(results.wind.speed);
     console.log(new Date(results.dt * 1000).toLocaleDateString());
-    
+
+    resultCard.append(titleCard,bodyCard);
+    searchResultsEl.append(resultCard);
 }
 
 //renders 5-day forecast that displays the date, an icon representation of weather conditions, the temperature, the wind speed, and the humidity
