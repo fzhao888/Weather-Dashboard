@@ -62,6 +62,72 @@ function renderLocalStorage() {
 
 
 
+function renderSearchResults() {
+    getCurrentWeather();
+    getFiveDay();
+}
+
+
+
+function getCurrentWeather() {
+    cityname = document.location.search.split('=')[1];
+
+    let apiKey = '764671b721b30354fb8205614f3a38ac';
+    let queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityname + "&appid=" + apiKey;
+
+    //fetch lat and lon coordinates 
+    fetch(queryURL)
+        .then(function (response) {
+            if (!response.ok) {
+                throw response.json();
+            }
+            return response.json();
+        })
+        .then(function (results) {
+            renderCurrentWeather(results);
+        })
+}
+//renders city name, the date, an icon representation of weather conditions, the temperature, the humidity, and the the wind speed
+function renderCurrentWeather(results) {
+    console.log(results);
+    console.log(results.name);
+    console.log(results.weather[0].icon);
+    console.log(results.main.humidity);
+    console.log(results.wind.speed);
+    console.log(results.dt);
+}
+
+//renders 5-day forecast that displays the date, an icon representation of weather conditions, the temperature, the wind speed, and the humidity
+function getFiveDay() {
+    cityname = document.location.search.split('=')[1];
+
+    let apiKey = '764671b721b30354fb8205614f3a38ac';
+    let queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityname + "&appid=" + apiKey + "&units=imperial";
+    fetch(queryURL)
+        .then(function (response) {
+            if (!response.ok) {
+                throw response.json();
+            }
+            return response.json();
+        })
+        .then(function (results) {
+            renderFiveDay(results);
+        });
+
+}
+
+function renderFiveDay(results) {
+    console.log(results);
+    //0,8,16,24,32
+    for (let i = 0; i <= 32; i += 8) {
+        console.log(results.city.name);
+        console.log(results.list[i].weather[0].icon);
+        console.log(results.list[i].main.humidity);
+        console.log(results.list[i].wind.speed);
+        console.log(results.list[i].dt);
+    }
+}
+
 
 renderLocalStorage();
 searchBtn.addEventListener("click", handleSearchFormSubmit);
