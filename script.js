@@ -31,4 +31,37 @@ function handleSearchFormSubmit(event) {
     renderSearchResults();
 }
 
+//renders previously searched cities
+function renderLocalStorage() {
+    let storedCities = JSON.parse(localStorage.getItem('cities'));
+    previousResultsEl.textContent = "";
+
+    if (!storedCities || storedCities.length === 0) {
+        return;
+    }
+
+    //makes a button for each stored city
+    let resultBtn;
+
+    for (let i = 0; i < storedCities.length; i++) {
+        resultBtn = document.createElement('button');
+        resultBtn.setAttribute('id', i);
+        resultBtn.textContent = storedCities[i];
+        previousResultsEl.appendChild(resultBtn);
+
+
+        resultBtn.addEventListener("click", function (event) {
+            event.preventDefault();
+            let resultID = event.target.id;
+            cityname = storedCities[resultID];
+            //location.assign('?q=' + cityname);
+            renderSearchResults();
+        });
+    }
+}
+
+
+
+
+renderLocalStorage();
 searchBtn.addEventListener("click", handleSearchFormSubmit);
