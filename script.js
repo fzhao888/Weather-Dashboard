@@ -41,19 +41,22 @@ function renderLocalStorage() {
     }
 
     //makes a button for each stored city
+    let buttonDiv = document.createElement('div');
+    buttonDiv.style.display = 'flex';
+    buttonDiv.style.flexDirection = 'column';
+
     let resultBtn;
-    previousResultsEl.style.display = 'flex';
-    previousResultsEl.style.flexDirection = 'column';
 
     for (let i = 0; i < storedCities.length; i++) {
-        if(storedCities[i].length === 0) {
+        if (storedCities[i].length === 0) {
             continue;
         }
         resultBtn = document.createElement('button');
         resultBtn.setAttribute('id', i);
         resultBtn.textContent = storedCities[i];
-        previousResultsEl.appendChild(resultBtn);
-
+        resultBtn.style.marginBottom = '5px';
+        resultBtn.style.borderRadius = '5px';
+        buttonDiv.append(resultBtn);
 
         resultBtn.addEventListener("click", function (event) {
             event.preventDefault();
@@ -62,6 +65,8 @@ function renderLocalStorage() {
             location.replace('?q=' + cityname);
         });
     }
+
+    previousResultsEl.appendChild(buttonDiv);
 }
 
 
@@ -69,7 +74,7 @@ function renderLocalStorage() {
 function renderSearchResults() {
     let queryString = document.location.search.split('=')[1];
 
-    if (queryString.length !== 0) {
+    if (queryString && queryString.length !== 0) {
         getCurrentWeather();
         getFiveDay();
     }
@@ -126,6 +131,11 @@ function renderCurrentWeather(results) {
 
     resultCard.append(headerCard, bodyCard);
     currentSearchResultsEl.append(resultCard);
+    currentSearchResultsEl.style.borderStyle = 'solid';
+    currentSearchResultsEl.style.borderWidth = '2px';
+    currentSearchResultsEl.style.marginLeft = '20px';
+    currentSearchResultsEl.style.paddingLeft = '5px';
+    currentSearchResultsEl.style.paddingBottom = '5px';
 }
 
 //renders 5-day forecast that displays the date, an icon representation of weather conditions, the temperature, the wind speed, and the humidity
@@ -150,10 +160,20 @@ function getFiveDay() {
 function renderFiveDay(results) {
     //0,8,16,24,32
     fiveDaySearchResultsEl.textContent = "";
+
     let resultCard = document.createElement('div');
 
+    let resultHeader = document.createElement('h2');
+    resultHeader.style.fontWeight = 'bold';
+    resultHeader.style.marginTop = '8px';
+    resultHeader.style.marginBottom = '8px';
+    resultHeader.textContent = '5-Day Forecast:';
+    resultCard.append(resultHeader);
+
+    let resultBody = document.createElement('div');
+
     for (let i = 0; i <= 32; i += 8) {
-        let resultBody = document.createElement('div');
+        let resultBodyItem = document.createElement('div');
 
         let dateEl = document.createElement('p');
         dateEl.textContent = new Date(results.list[i].dt * 1000).toLocaleDateString();
@@ -171,16 +191,23 @@ function renderFiveDay(results) {
         let humidityEl = document.createElement('p');
         humidityEl.textContent = "Humidity: " + results.list[i].main.humidity + " %";
 
-        resultBody.append(dateEl, iconEl, tempEl, windspeedEl, humidityEl);
-        resultBody.style.padding = '5px';
-        resultBody.style.backgroundColor = 'rebeccapurple';
-        resultBody.style.color = 'white';
-        resultBody.style.marginLeft = '5px';
+        resultBodyItem.append(dateEl, iconEl, tempEl, windspeedEl, humidityEl);
+        resultBodyItem.style.padding = '5px';
+        resultBodyItem.style.backgroundColor = 'rebeccapurple';
+        resultBodyItem.style.color = 'white';
 
-        resultCard.append(resultBody);
+        if (i !== 0) {
+            resultBodyItem.style.marginLeft = '5px';
+        }
+
+        resultBody.append(resultBodyItem);
     }
+    resultBody.style.display = 'flex';
 
     resultCard.style.display = 'flex';
+    resultCard.style.flexDirection = 'column';
+
+    resultCard.append(resultBody);
     fiveDaySearchResultsEl.append(resultCard);
 }
 
