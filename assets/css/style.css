@@ -1,0 +1,66 @@
+html,
+body {
+	height: 100%;
+    width: 100%;
+}
+
+.header-title{
+    display: flex;
+    background-color: rebeccapurple;
+    color: white;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.container{
+    display: flex;
+}
+
+.search-form{
+    display:flex;
+    flex-direction: column;
+    margin-bottom: 8px;
+}
+
+.search-form button{
+    margin-top: 8px;
+    border-radius: 5px;
+    background-color: purple;
+    color: white;
+}
+
+.search-form h2{
+    margin-bottom: 8px;
+}
+
+.previous-results{
+    border-top: solid;
+    border-color: gray;
+    padding-top: 8px;
+}
+
+.search-results-container{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+
+.current-search-results{
+    border-style: solid;
+    border-width: 2px;
+    margin-left: 20px;
+    padding-left: 5px;
+    padding-bottom: 5px;
+}
+
+.fiveday-title{
+    padding: 20px; 
+}
+
+.fiveday-search-results{
+    margin-left: 20px;
+}
+
+p{
+    line-height: 2;
+}
