@@ -23,8 +23,11 @@ function handleSearchFormSubmit(event) {
     if (!storedCities || storedCities.length === 0) {
         storedCities = [];
     }
-    storedCities.push(cityname);
-    localStorage.setItem("cities", JSON.stringify(storedCities));
+
+    if (!storedCities.includes(cityname)) {
+        storedCities.push(cityname);
+        localStorage.setItem("cities", JSON.stringify(storedCities));
+    }
 
     //sets query parameter
     let queryString = '?q=' + cityname;
@@ -54,7 +57,7 @@ function renderLocalStorage() {
         resultBtn = document.createElement('button');
         resultBtn.setAttribute('id', i);
         resultBtn.textContent = storedCities[i];
-        resultBtn.style.marginBottom = '5px';
+        resultBtn.style.marginBottom = '10px';
         resultBtn.style.borderRadius = '5px';
         buttonDiv.append(resultBtn);
 
