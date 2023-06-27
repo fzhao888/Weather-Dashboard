@@ -5,36 +5,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="./assets/css/reset.css" />
     <link rel="stylesheet" type="text/css" href="./assets/css/style.css" />
 </head>
 
 <body>
-    <header>
-        <h2 class="header-title"> Weather Dashboard </h2>
-    </header>
+    <div class="container-fluid">
+        <header>
+            <h2 class="row display-6 header-title"> Weather Dashboard </h2>
+        </header>
 
-    <div class="container">
-        <div class="search-card">
-            <form class="search-form">
-                <h2>Search for a City:</h2>
-                <input placeholder="San Diego" id="search-input" />
-                <button id="search"> Search </button>
-            </form>
+        
+            <section class="col-3 search-container">
+                <div class="search-card">
+                    <form class="search-form ">
+                        <h2>Search for a City:</h2>
+                        <input placeholder="San Diego" id="search-input" />
+                        <button class="btn btn-default btn-small" id="search"> Search </button>
+                    </form>
 
-            <div class="previous-results">
-            </div>
-        </div>
+                    <div class="previous-results">
+                    </div>
+            </section>
 
-        <div class="search-results-container">
-            <div class="current-search-results">
-            </div>
-
-            <div class="fiveday-search-results">
-            </div>
-        </div>
+            <section class="col-8 search-results-container">
+                <div class="current-search-results">
+                </div>
+                
+                <div class="fiveday-search-results">
+                </div>
+        </section>
     </div>
-
 
 </body>
 <script src="script.js"></script>

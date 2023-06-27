@@ -7,8 +7,16 @@
 }
 
 .container{
-    display: flex;
-    margin-left: 5px;
+    display: flex;  
+    flex-direction: column;
+
+}
+
+.search-container{
+    float:left;
+}
+.results{
+    display: flex;  
 }
 
 .search-form{
@@ -18,8 +26,7 @@
 }
 
 .search-form button{
-    margin-top: 8px;
-    border-radius: 5px;
+    margin-top: 5px;
     background-color: purple;
     color: white;
 }
@@ -34,8 +41,7 @@
     border-top: solid;
     border-color: gray;
     padding-top: 8px;
-}
-
+} 
 .search-results-container{
     display: flex;
     flex-wrap: wrap;
@@ -49,3 +55,4 @@
 p{
     line-height: 2;
 }
+
