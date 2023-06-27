@@ -147,7 +147,7 @@ function renderCurrentWeather(results) {
     currentSearchResultsEl.style.borderWidth = '2px';
     currentSearchResultsEl.style.marginLeft = '20px';
     currentSearchResultsEl.style.paddingLeft = '5px';
-    currentSearchResultsEl.style.paddingBottom = '5px';
+    currentSearchResultsEl.style.paddingBottom = '5px'; 
 }//end of rending current weather
 
 //fetches 5-day forecast from openweather api
@@ -190,8 +190,8 @@ function renderFiveDay(results) {
     resultBody.classList.add('card-deck','row'); 
 
     for (let i = 0; i <= 32; i += 8) {
-        let resultBodyItem = document.createElement('div');
-        resultBodyItem.classList.add('card','col-12','col-sm-12','col-md-12','col-lg-2');
+        let resultBodyItem = document.createElement('div'); 
+        resultBodyItem.classList.add('card','col-12','col-sm-10','col-md-10','col-lg-2'); 
         
         //adds date to result body item
         let dateEl = document.createElement('p');
@@ -222,6 +222,7 @@ function renderFiveDay(results) {
         resultBodyItem.style.padding = '5px';
         resultBodyItem.style.backgroundColor = 'rebeccapurple';
         resultBodyItem.style.color = 'white';
+        resultBodyItem.style.fontSize = '12';
         
         resultBody.append(resultBodyItem);
     }
