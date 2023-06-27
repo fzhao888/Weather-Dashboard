@@ -3,6 +3,7 @@ let previousResultsEl = document.querySelector('.previous-results');
 let currentSearchResultsEl = document.querySelector('.current-search-results');
 let fiveDaySearchResultsEl = document.querySelector('.fiveday-search-results');
 let searchInputEl = document.getElementById('search-input');
+let clearBtn = document.getElementById('clear');
 let cityname = "";
 
 //handles search form
@@ -67,6 +68,15 @@ function renderLocalStorage() {
             cityname = storedCities[resultID];
             location.replace('?q=' + cityname);
         });
+
+        resultBtn.onmouseover = function(event){
+            event.target.style.backgroundColor = 'gray';
+        };
+
+        resultBtn.onmouseout = function(event){
+            event.target.style.backgroundColor = 'lightgray';
+        };
+
     }//end of making button of each stored city
 
     previousResultsEl.appendChild(buttonDiv);
@@ -239,3 +249,8 @@ function renderFiveDay(results) {
 renderSearchResults();
 renderLocalStorage();
 searchBtn.addEventListener("click", handleSearchFormSubmit);
+clearBtn.addEventListener("click", function(event){
+    event.preventDefault();
+    localStorage.clear();
+    location.reload();
+});

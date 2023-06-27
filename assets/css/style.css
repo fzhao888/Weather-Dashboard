@@ -15,8 +15,23 @@
 .search-container{
     float:left;
 }
+
 .results{
     display: flex;  
+}
+
+.search-form button, #clear{
+    margin-top: 5px;
+    background-color: purple;
+    color: white; 
+}
+
+.search-form button:hover{
+    background-color: gray;
+}
+
+#clear:hover{ 
+    background-color: gray;
 }
 
 .search-form{
@@ -25,16 +40,10 @@
     margin-bottom: 8px;
 }
 
-.search-form button{
-    margin-top: 5px;
-    background-color: purple;
-    color: white;
-}
-
 .search-form h2{
     margin-bottom: 8px;
 }
-
+ 
 .previous-results{
     display: flex;
     flex-direction: column;
