@@ -293,7 +293,7 @@ searchBtn.addEventListener("click", handleSearchFormSubmit);
 clearBtn.addEventListener("click", function (event) {
     event.preventDefault();
     localStorage.clear();
-    location.reload();
+    renderLocalStorage();
 });
 
 document.getElementById('errorModal').addEventListener('hide.bs.modal', function (event) {
