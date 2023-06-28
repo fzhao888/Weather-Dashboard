@@ -19,7 +19,7 @@ function handleSearchFormSubmit(event) {
 
 //adds city to local storage
 function addLocalStorage() {
-    //stores search input into cityname, then saves it to local storage:
+    //stores query parameter into cityname, then saves it to local storage:
     let storedCities = JSON.parse(localStorage.getItem('cities'));
 
     //parses city name for spaces:
