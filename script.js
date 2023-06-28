@@ -146,6 +146,7 @@ function renderCurrentWeather(results) {
 
     currentSearchResultsEl.textContent = "";
     let resultCard = document.createElement('div');
+    resultCard.classList.add('row');
 
     let headerCard = document.createElement('div');
 
@@ -225,15 +226,17 @@ function renderFiveDay(results) {
     fiveDaySearchResultsEl.textContent = "";
 
     let resultCard = document.createElement('div');
-
+    //styling result header
     let resultHeader = document.createElement('h2');
     resultHeader.style.fontWeight = 'bold';
     resultHeader.style.marginTop = '8px';
     resultHeader.style.marginBottom = '8px';
-    resultHeader.textContent = '5-Day Forecast:'; 1
+    resultHeader.style.marginLeft = '8px';
+    resultHeader.textContent = '5-Day Forecast:'; 
     resultCard.append(resultHeader);
 
     let resultBody = document.createElement('div');
+    resultBody.style.marginLeft = '8px';
 
     resultBody.classList.add('card-deck', 'row');
 

@@ -1,4 +1,4 @@
-# Weather-Dashboard
+# Weather Dashboard
 
 ## Description
 This Weather Dashboard allows a traveler view the weather outlook for multiple cities, so that they can plan a trip accordingly.
