@@ -4,31 +4,53 @@ let currentSearchResultsEl = document.querySelector('.current-search-results');
 let fiveDaySearchResultsEl = document.querySelector('.fiveday-search-results');
 let searchInputEl = document.getElementById('search-input');
 let clearBtn = document.getElementById('clear');
+const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
 let cityname = "";
 
 //handles search form
 function handleSearchFormSubmit(event) {
     event.preventDefault();
-
-    //stores search input into cityname, then saves it to local storage:
     cityname = searchInputEl.value;
-
-    let storedCities = JSON.parse(localStorage.getItem('cities'));
-    console.log(cityname);
-    if (!storedCities || storedCities.length === 0) {
-        storedCities = [];
-    }
-
-    //checks for dupe stored city
-    if (!storedCities.includes(cityname)) {
-        storedCities.push(cityname);
-        localStorage.setItem("cities", JSON.stringify(storedCities));
-    }
 
     //sets query parameter
     let queryString = '?q=' + cityname;
     location.replace(queryString);
 }//end of handling search form
+
+//adds city to local storage
+function addLocalStorage() {
+    //stores search input into cityname, then saves it to local storage:
+    let storedCities = JSON.parse(localStorage.getItem('cities'));
+
+    //parses city name for spaces:
+    let city_first_name = cityname.split('%20')[0];
+    let city_last_name = cityname.split('%20')[1];
+    let searchedCity = "";
+
+    //capitializes first letter
+    if (!city_last_name) {
+       searchedCity = city_first_name.charAt(0).toUpperCase() + city_first_name.slice(1);
+    } else {
+        searchedCity = city_first_name.charAt(0).toUpperCase() + city_first_name.slice(1) + " " + city_last_name.charAt(0).toUpperCase() + city_last_name.slice(1);
+    }//end of parsing city name for spaces
+
+    if (!storedCities || storedCities.length === 0) {
+        storedCities = [];
+    }
+
+    //checks for dupe stored city
+    let cities = [];
+    for (let i = 0; i < storedCities.length; i++) {
+        cities.push(storedCities[i]);
+    }
+
+    if (!cities.includes(searchedCity)) { 
+        cities.push(searchedCity);
+        localStorage.setItem("cities", JSON.stringify(cities));
+    }
+
+    renderLocalStorage();
+}//end of adding city to local storage
 
 //renders previously searched cities
 function renderLocalStorage() {
@@ -69,16 +91,15 @@ function renderLocalStorage() {
             location.replace('?q=' + cityname);
         });
 
-        resultBtn.onmouseover = function(event){
+        resultBtn.onmouseover = function (event) {
             event.target.style.backgroundColor = 'gray';
         };
 
-        resultBtn.onmouseout = function(event){
+        resultBtn.onmouseout = function (event) {
             event.target.style.backgroundColor = 'lightgray';
         };
 
     }//end of making button of each stored city
-
     previousResultsEl.appendChild(buttonDiv);
 }//end of rending previously search cities
 
@@ -110,12 +131,19 @@ function getCurrentWeather() {
             return response.json();
         })
         .then(function (results) {
-            renderCurrentWeather(results);
-        })
+            if (results || results.length !== 0) {
+                renderCurrentWeather(results);
+            }
+        }).catch(function (error) {
+            errorModal.show();
+            errorModal.hide();
+        });
 }//end of fetching current weather
 
 //renders city name, the date, an icon representation of weather conditions, the temperature, the humidity, and the the wind speed
 function renderCurrentWeather(results) {
+    addLocalStorage();
+
     currentSearchResultsEl.textContent = "";
     let resultCard = document.createElement('div');
 
@@ -129,7 +157,7 @@ function renderCurrentWeather(results) {
     //creates and adds weather icon element
     let iconEl = document.createElement('img');
     iconEl.setAttribute('src', 'https://openweathermap.org/img/wn/' + results.weather[0].icon + '.png');
-    iconEl.setAttribute('alt','image of weather icon');
+    iconEl.setAttribute('alt', 'image of weather icon');
     headerCard.style.display = 'flex';
     headerCard.style.alignItems = 'center';
 
@@ -137,11 +165,11 @@ function renderCurrentWeather(results) {
 
     //creates body card
     let bodyCard = document.createElement('div');
-    
+
     //adds tempature element to body
     let tempEl = document.createElement('p');
     tempEl.textContent = "Temp: " + results.main.temp + " °F";
-    
+
     //adds windspeed element to body
     let windspeedEl = document.createElement('p');
     windspeedEl.textContent = "Windspeed: " + results.wind.speed + " MPH";
@@ -157,7 +185,7 @@ function renderCurrentWeather(results) {
     currentSearchResultsEl.style.borderWidth = '2px';
     currentSearchResultsEl.style.marginLeft = '20px';
     currentSearchResultsEl.style.paddingLeft = '5px';
-    currentSearchResultsEl.style.paddingBottom = '5px'; 
+    currentSearchResultsEl.style.paddingBottom = '5px';
 }//end of rending current weather
 
 //fetches 5-day forecast from openweather api
@@ -168,6 +196,7 @@ function getFiveDay() {
     //fetches 5-day forecast
     let apiKey = '764671b721b30354fb8205614f3a38ac';
     let queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityname + "&appid=" + apiKey + "&units=imperial";
+
     fetch(queryURL)
         .then(function (response) {
             if (!response.ok) {
@@ -176,33 +205,42 @@ function getFiveDay() {
             return response.json();
         })
         .then(function (results) {
-            renderFiveDay(results);
+            if (results || results.length !== 0) {
+                renderFiveDay(results);
+            }
+        })
+        .catch(function (error) {
+            errorModal.show();
+            errorModal.hide();
         });
 
 }//end of fetching 5-day forecast
 
+
 //renders 5-day forecast results
 function renderFiveDay(results) {
     //0,8,16,24,32
+    addLocalStorage();
+
     fiveDaySearchResultsEl.textContent = "";
 
-    let resultCard = document.createElement('div'); 
+    let resultCard = document.createElement('div');
 
     let resultHeader = document.createElement('h2');
     resultHeader.style.fontWeight = 'bold';
     resultHeader.style.marginTop = '8px';
     resultHeader.style.marginBottom = '8px';
-    resultHeader.textContent = '5-Day Forecast:';1
+    resultHeader.textContent = '5-Day Forecast:'; 1
     resultCard.append(resultHeader);
 
     let resultBody = document.createElement('div');
 
-    resultBody.classList.add('card-deck','row'); 
+    resultBody.classList.add('card-deck', 'row');
 
     for (let i = 0; i <= 32; i += 8) {
-        let resultBodyItem = document.createElement('div'); 
-        resultBodyItem.classList.add('card','col-12','col-sm-10','col-md-10','col-lg-2'); 
-        
+        let resultBodyItem = document.createElement('div');
+        resultBodyItem.classList.add('card', 'col-12', 'col-sm-10', 'col-md-10', 'col-lg-2');
+
         //adds date to result body item
         let dateEl = document.createElement('p');
         dateEl.textContent = new Date(results.list[i].dt * 1000).toLocaleDateString();
@@ -214,17 +252,17 @@ function renderFiveDay(results) {
         iconEl.style.width = "50px";
         iconEl.style.height = "50px";
         iconEl.setAttribute('src', 'https://openweathermap.org/img/wn/' + results.list[i].weather[0].icon + '.png');
-        iconEl.setAttribute('alt','image of weather icon'); 
+        iconEl.setAttribute('alt', 'image of weather icon');
 
         //adds tempature element to result body item
         let tempEl = document.createElement('p');
         tempEl.textContent = "Temp: " + results.list[i].main.temp + " °F";
 
-         //adds wind speed element to result body item
-        let windspeedEl = document.createElement('p'); 
+        //adds wind speed element to result body item
+        let windspeedEl = document.createElement('p');
         windspeedEl.textContent = "Windspeed: " + results.list[i].wind.speed + " MPH";
 
-         //adds humidity element to result body item
+        //adds humidity element to result body item
         let humidityEl = document.createElement('p');
         humidityEl.textContent = "Humidity: " + results.list[i].main.humidity + " %";
 
@@ -233,11 +271,11 @@ function renderFiveDay(results) {
         resultBodyItem.style.backgroundColor = 'rebeccapurple';
         resultBodyItem.style.color = 'white';
         resultBodyItem.style.fontSize = '12';
-        
+
         resultBody.append(resultBodyItem);
     }
 
-    resultBody.style.justifyContent = 'space-between'; 
+    resultBody.style.justifyContent = 'space-between';
     resultBody.style.columnGap = '1rem';
     resultBody.style.rowGap = '1rem';
 
@@ -249,8 +287,12 @@ function renderFiveDay(results) {
 renderSearchResults();
 renderLocalStorage();
 searchBtn.addEventListener("click", handleSearchFormSubmit);
-clearBtn.addEventListener("click", function(event){
+clearBtn.addEventListener("click", function (event) {
     event.preventDefault();
     localStorage.clear();
     location.reload();
+});
+
+document.getElementById('errorModal').addEventListener('hide.bs.modal', function (event) {
+    location.replace('./index.html');
 });
